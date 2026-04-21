@@ -1,22 +1,10 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          scope: "openid email profile https://www.googleapis.com/auth/calendar",
-          access_type: "offline",
-          prompt: "consent",
-        },
-      },
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -31,7 +19,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) return null;
-        if (!user.password_hash) return null; // Usuário Google tentando entrar com senha vazia
+        if (!user.password_hash) return null;
 
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password_hash);
 
@@ -47,34 +35,7 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === "google") {
-        if (!user.email) return false;
-
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email }
-        });
-
-        if (!dbUser) {
-          // Cria usuário se não existir
-          const newUser = await prisma.user.create({
-            data: {
-              email: user.email,
-              name: user.name,
-              password_hash: "", // Senha vazia para usuários Google
-              has_access: false, // Por padrão não tem acesso até pagar
-            }
-          });
-          user.id = newUser.id;
-          (user as any).has_access = newUser.has_access;
-        } else {
-          user.id = dbUser.id;
-          (user as any).has_access = dbUser.has_access;
-        }
-      }
-      return true;
-    },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.has_access = (user as any).has_access;

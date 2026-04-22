@@ -51,7 +51,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Tudo que você precisa em um app</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {['Rotina Visual Diária', 'Integração Google Calendar', 'Mural Rápido de Tarefas', 'Notas Minimalistas', 'Controle Financeiro Descomplicado', 'Acesso super rápido Offline'].map((feature, i) => (
+            {['Rotina Visual Diária', 'Agenda Inteligente', 'Mural Rápido de Tarefas', 'Notas Minimalistas', 'Controle Financeiro Descomplicado', 'Acesso super rápido Offline'].map((feature, i) => (
               <div key={i} className="flex flex-col items-center text-center p-6 bg-slate-50 rounded-2xl border border-slate-100">
                 <CheckCircle2 size={32} className="text-blue-500 mb-4" />
                 <h3 className="font-semibold text-lg text-slate-800 mb-2">{feature}</h3>

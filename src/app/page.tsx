@@ -68,6 +68,9 @@ function Hero() {
           <br />
           <span className="italic font-light text-sky-200">em órbita.</span>
         </h1>
+        <p className="font-serif text-2xl sm:text-3xl md:text-4xl text-slate-300 mt-6 sm:mt-8 max-w-xl">
+          Seu tempo, <span className="italic text-sky-200">em ordem.</span>
+        </p>
 
         {/* Quote + circle */}
         <div className="mt-14 sm:mt-20 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-10">
@@ -78,12 +81,12 @@ function Hero() {
           <Link
             href="/login"
             className="group relative flex items-center justify-center w-40 h-40 sm:w-48 sm:h-48 rounded-full border border-sky-300/60 hover:border-sky-200 transition shrink-0 self-start sm:self-end"
-            aria-label="Entrar no Sara Core"
+            aria-label="Entre em Sara Core"
           >
             <div className="text-center">
               <ArrowUpRight className="mx-auto mb-2 text-sky-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" size={22} />
               <span className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-slate-100">
-                Entrar<br />no Core
+                Entre em<br />Sara Core
               </span>
             </div>
           </Link>

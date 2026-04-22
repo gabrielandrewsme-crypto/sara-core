@@ -68,7 +68,7 @@ export default function LoginPage() {
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-900">Lembrar de mim</label>
               </div>
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Esqueceu a senha?</a>
+                <Link href="/esqueci-senha" className="font-medium text-blue-600 hover:text-blue-500">Esqueceu a senha?</Link>
               </div>
             </div>
 

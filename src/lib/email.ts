@@ -68,3 +68,34 @@ export async function sendEventReminderEmail(email: string, eventTitle: string, 
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+export async function sendPasswordResetEmail(email: string, resetUrl: string) {
+  if (!resend) {
+    console.warn('RESEND_API_KEY is not defined. Skipping password reset email.');
+    return;
+  }
+
+  try {
+    await resend.emails.send({
+      from: 'Sara Core <onboarding@resend.dev>',
+      to: email,
+      subject: 'Redefinir sua senha — Sara Core',
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; padding: 40px 20px; color: #e2e8f0;">
+          <div style="max-width: 480px; margin: 0 auto; background: #1e293b; border-radius: 16px; padding: 40px 32px;">
+            <h1 style="font-family: Georgia, serif; color: #7dd3fc; margin: 0 0 16px; font-size: 28px; font-weight: 500;">Redefinir sua senha</h1>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 12px;">Recebemos um pedido para redefinir a senha da sua conta Sara Core.</p>
+            <p style="color: #cbd5e1; line-height: 1.6; margin: 0 0 28px;">Clique no botão abaixo para criar uma nova senha. O link expira em 1 hora.</p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="${resetUrl}" style="display: inline-block; background: #7dd3fc; color: #0f172a; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: 500;">Redefinir senha</a>
+            </div>
+            <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 28px 0 0;">Se não foi você, pode ignorar este email — sua senha atual continua válida.</p>
+          </div>
+          <p style="text-align: center; color: #475569; font-size: 11px; margin-top: 24px; letter-spacing: 0.2em; text-transform: uppercase;">Sara Core</p>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error('Erro ao enviar email de redefinição de senha:', error);
+  }
+}
+

@@ -4,10 +4,18 @@ import { NextResponse } from "next/server";
 export default withAuth(
   function middleware(req) {
     const token = req.nextauth.token;
-    
-    // Redirect to block page if user is logged in but has no access
-    if (token && !token.has_access && req.nextUrl.pathname !== "/bloqueado") {
-      return NextResponse.redirect(new URL("/bloqueado", req.url));
+    const { pathname } = req.nextUrl;
+
+    if (!token) return;
+
+    // Not activated → force the user onto the activation gate
+    if (!token.is_active && pathname !== "/ativar") {
+      return NextResponse.redirect(new URL("/ativar", req.url));
+    }
+
+    // Already activated → don't let them linger on the gate
+    if (token.is_active && pathname === "/ativar") {
+      return NextResponse.redirect(new URL("/app/rotina", req.url));
     }
   },
   {
@@ -21,5 +29,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/app/:path*", "/bloqueado"]
+  matcher: ["/app/:path*", "/ativar"]
 };

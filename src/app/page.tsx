@@ -3,8 +3,6 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
 export default function LandingPage() {
-  const checkoutUrl = process.env.NEXT_PUBLIC_CAKTO_CHECKOUT_URL || "#";
-
   return (
     <main className="min-h-screen bg-slate-50">
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
@@ -29,23 +27,23 @@ export default function LandingPage() {
             O aplicativo desenhado para funcionar com você, não contra você. <br/>Perfeito para TDAH e mentes criativas que precisam de clareza.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              href={checkoutUrl}
-              className="w-full sm:w-auto bg-blue-600 text-white font-medium px-8 py-4 rounded-full flex items-center justify-center space-x-2 hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 text-lg"
+            <Link
+              href="/login"
+              className="w-full sm:w-auto bg-sky-300 text-slate-950 font-medium px-8 py-4 rounded-full flex items-center justify-center space-x-2 hover:bg-sky-200 transition shadow-lg shadow-sky-300/30 text-lg"
             >
-              <span>Adquirir por R$ 14,90</span>
+              <span>Entrar na minha conta</span>
               <ArrowRight size={20} />
             </Link>
-            <Link 
+            <Link
               href="/instalar"
               className="w-full sm:w-auto bg-white text-slate-700 font-medium px-8 py-4 rounded-full flex items-center justify-center space-x-2 border border-slate-200 hover:bg-slate-50 transition text-lg"
             >
-              Como Instala (PWA)
+              Como Instalar (PWA)
             </Link>
           </div>
         </div>
       </section>
-      
+
       {/* Features */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
@@ -53,7 +51,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {['Rotina Visual Diária', 'Agenda Inteligente', 'Mural Rápido de Tarefas', 'Notas Minimalistas', 'Controle Financeiro Descomplicado', 'Acesso super rápido Offline'].map((feature, i) => (
               <div key={i} className="flex flex-col items-center text-center p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                <CheckCircle2 size={32} className="text-blue-500 mb-4" />
+                <CheckCircle2 size={32} className="text-sky-400 mb-4" />
                 <h3 className="font-semibold text-lg text-slate-800 mb-2">{feature}</h3>
               </div>
             ))}

@@ -12,20 +12,20 @@ async function main() {
     const user = await prisma.user.upsert({
       where: { email },
       update: {
-        has_access: true
+        is_active: true
       },
       create: {
         email,
         name,
         password_hash,
-        has_access: true
+        is_active: true
       }
     });
 
     console.log("Usuário criado/atualizado com sucesso!");
     console.log(`Email: ${user.email}`);
     console.log(`Senha temporária: ${tempPassword}`);
-    console.log(`Acesso total: ${user.has_access ? "SIM" : "NÃO"}`);
+    console.log(`Acesso total: ${user.is_active ? "SIM" : "NÃO"}`);
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
   } finally {

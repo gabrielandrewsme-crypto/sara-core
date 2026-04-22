@@ -16,7 +16,7 @@ model User {
   email            String            @unique
   password_hash    String
   name             String?
-  has_access       Boolean           @default(false)
+  is_active        Boolean           @default(false)
   created_at       DateTime          @default(now())
   updated_at       DateTime          @updatedAt
 

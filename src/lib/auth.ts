@@ -29,16 +29,21 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          has_access: user.has_access,
+          is_active: user.is_active,
         };
       }
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
-        token.id = user.id;
-        token.has_access = (user as any).has_access;
+        token.id = (user as any).id;
+        token.is_active = (user as any).is_active;
+      }
+
+      // Allow the client to push a refreshed is_active (after activation) via update()
+      if (trigger === "update" && session?.is_active !== undefined) {
+        token.is_active = session.is_active;
       }
 
       return token;
@@ -46,7 +51,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token.id;
-        (session.user as any).has_access = token.has_access;
+        (session.user as any).is_active = token.is_active;
       }
       return session;
     }

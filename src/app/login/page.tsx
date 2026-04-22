@@ -33,12 +33,6 @@ export default function LoginPage() {
           <Image src="/icons/icon-192x192.png" width={64} height={64} alt="Sara Core" className="rounded-2xl" />
         </Link>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-slate-900">Entrar na sua conta</h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-           Ainda não tem acesso?{' '}
-          <Link href="/" className="font-medium text-blue-600 hover:text-blue-500">
-            Adquirir agora
-          </Link>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

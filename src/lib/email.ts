@@ -1,7 +1,12 @@
 import { Resend } from 'resend';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 // Inicializa condicionalmente para não quebrar build se RESEND_API_KEY não estiver no .env do CI
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+// Remetente padrão — pode ser sobrescrito via EMAIL_FROM no Vercel sem redeploy de código
+const FROM = process.env.EMAIL_FROM || 'Sara Core <no-reply@saraortizai.com.br>';
 
 export async function sendWelcomeEmail(email: string, name: string) {
   if (!resend) {
@@ -11,7 +16,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
 
   try {
     await resend.emails.send({
-      from: 'Sara Core <onboarding@resend.dev>', // No modo de teste/sandbox do Resend
+      from: FROM,
       to: email,
       subject: 'Bem-vindo(a) ao Sara Core!',
       html: `
@@ -46,7 +51,7 @@ export async function sendEventReminderEmail(email: string, eventTitle: string, 
 
   try {
     await resend.emails.send({
-      from: 'Sara Core <alertas@resend.dev>',
+      from: FROM,
       to: email,
       subject,
       html: `
@@ -65,9 +70,6 @@ export async function sendEventReminderEmail(email: string, eventTitle: string, 
   }
 }
 
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-
 export async function sendPasswordResetEmail(email: string, resetUrl: string) {
   if (!resend) {
     console.warn('RESEND_API_KEY is not defined. Skipping password reset email.');
@@ -76,7 +78,7 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
 
   try {
     await resend.emails.send({
-      from: 'Sara Core <onboarding@resend.dev>',
+      from: FROM,
       to: email,
       subject: 'Redefinir sua senha — Sara Core',
       html: `
@@ -98,4 +100,3 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string) {
     console.error('Erro ao enviar email de redefinição de senha:', error);
   }
 }
-

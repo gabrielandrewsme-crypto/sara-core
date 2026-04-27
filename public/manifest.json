@@ -1,10 +1,12 @@
 {
+  "id": "/",
   "name": "Sara Core",
   "short_name": "Sara Core",
   "description": "App mobile-first voltado para organização de tempo e produtividade.",
-  "theme_color": "#2563EB",
-  "background_color": "#FFFFFF",
+  "theme_color": "#0a1929",
+  "background_color": "#0a1929",
   "display": "standalone",
+  "display_override": ["standalone"],
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
@@ -12,12 +14,26 @@
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

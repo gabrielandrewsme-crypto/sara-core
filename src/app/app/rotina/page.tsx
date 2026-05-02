@@ -38,6 +38,7 @@ export default async function RotinaPage(props: { searchParams: Promise<any> }) 
     id: r.id,
     title: r.title,
     time: r.time,
+    duration: r.duration_min,
     days_of_week: r.days_of_week,
     isCompletedToday: completedIds.has(r.id),
     category: r.category ?? "default",

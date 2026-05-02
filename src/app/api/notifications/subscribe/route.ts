@@ -18,15 +18,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
     }
 
-    // Upsert: se já existir o endpoint para este usuário, não cria duplicado
-    await prisma.pushSubscription.create({
-      data: {
-        user_id: userId,
-        endpoint,
-        keys_auth: keys.auth,
-        keys_p256dh: keys.p256dh,
-      }
+    // Sem unique constraint no schema, então faz dedupe manual por (user_id, endpoint)
+    const existing = await prisma.pushSubscription.findFirst({
+      where: { user_id: userId, endpoint },
     });
+
+    if (existing) {
+      await prisma.pushSubscription.update({
+        where: { id: existing.id },
+        data: { keys_auth: keys.auth, keys_p256dh: keys.p256dh },
+      });
+    } else {
+      await prisma.pushSubscription.create({
+        data: {
+          user_id: userId,
+          endpoint,
+          keys_auth: keys.auth,
+          keys_p256dh: keys.p256dh,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

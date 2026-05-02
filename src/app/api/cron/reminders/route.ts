@@ -13,11 +13,12 @@ if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 }
 
 export async function GET(req: NextRequest) {
-  // Proteção opcional via API Key no Header para ser chamado apenas pelo Vercel Cron
-  // const authHeader = req.headers.get("Authorization");
-  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-  //   return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
-  // }
+  if (process.env.CRON_SECRET) {
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    }
+  }
 
   const now = new Date();
   
@@ -84,7 +85,7 @@ export async function GET(req: NextRequest) {
               JSON.stringify({
                 title: "Lembrete Sara Core",
                 body: notificationBody,
-                icon: "/icon-192x192.png",
+                icon: "/icons/icon-192x192.png",
                 data: { url: "/app/agenda" }
               })
             );

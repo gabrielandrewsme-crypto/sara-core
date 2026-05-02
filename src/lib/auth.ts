@@ -60,7 +60,12 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
+    maxAge: 90 * 24 * 60 * 60, // 90 dias
+    updateAge: 24 * 60 * 60,   // renova o cookie 1x por dia de uso
+  },
+  jwt: {
+    maxAge: 90 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

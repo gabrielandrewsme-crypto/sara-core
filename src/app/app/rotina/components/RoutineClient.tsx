@@ -25,6 +25,7 @@ type RoutineData = {
   id: string;
   title: string;
   time: string;
+  duration: number;
   days_of_week: number[];
   isCompletedToday: boolean;
   category: string;
@@ -383,10 +384,10 @@ function RoutineCard({
           e.stopPropagation();
           onEdit();
         }}
-        className="ml-2 text-slate-300 hover:text-blue-500 transition"
+        className="ml-1 p-2 -m-1 text-slate-400 hover:text-blue-500 active:text-blue-600 transition rounded-full"
         aria-label="Editar bloco"
       >
-        <Edit2 size={16} />
+        <Edit2 size={18} />
       </button>
 
       {/* Delete */}
@@ -395,10 +396,10 @@ function RoutineCard({
           e.stopPropagation();
           setShowDelete(!showDelete);
         }}
-        className="ml-2 text-slate-300 hover:text-red-400 transition"
+        className="ml-1 p-2 -m-1 text-slate-400 hover:text-red-500 active:text-red-600 transition rounded-full"
         aria-label="Remover bloco"
       >
-        <Trash2 size={16} />
+        <Trash2 size={18} />
       </button>
 
       {/* Confirm delete */}
@@ -433,21 +434,22 @@ function RoutineCard({
 export function RoutineClient({ routines, searchParams }: { routines: RoutineData[]; searchParams?: any }) {
   const [isPending, startTransition] = useTransition();
   const [showForm, setShowForm] = useState(false);
+  const [editingRoutine, setEditingRoutine] = useState<RoutineData | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  
+
   // Captura os dados iniciais da URL (se houver)
   const [initialDataFromUrl] = useState(() => {
     if (!searchParams) return null;
-    
+
     const { title, time, duration, category, days_of_week } = searchParams;
-    
+
     if (title || time) {
       return {
         title: title || "",
         time: time || "",
         duration: duration || "30",
         category: category || "default",
-        days_of_week: days_of_week 
+        days_of_week: days_of_week
           ? days_of_week.split(",").map(Number).filter((n: any) => !isNaN(n))
           : [0, 1, 2, 3, 4, 5, 6]
       };
@@ -463,13 +465,15 @@ export function RoutineClient({ routines, searchParams }: { routines: RoutineDat
   }, [initialDataFromUrl]);
 
   const completed = routines.filter((r) => r.isCompletedToday).length;
+  const isFormOpen = showForm || editingRoutine !== null;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const target = editingRoutine;
     startTransition(() => {
-      if (editingRoutine) {
-        updateRoutine(editingRoutine.id, formData);
+      if (target) {
+        updateRoutine(target.id, formData);
       } else {
         createRoutine(formData);
       }
@@ -481,14 +485,12 @@ export function RoutineClient({ routines, searchParams }: { routines: RoutineDat
     });
   };
 
-  const [editingRoutine, setEditingRoutine] = useState<RoutineData | null>(null);
-
   return (
     <div className="pb-32 space-y-5">
       <GreetingHeader completed={completed} total={routines.length} />
 
       {/* Botão Adicionar */}
-      {!showForm && (
+      {!isFormOpen && (
         <button
           onClick={() => setShowForm(true)}
           id="add-routine-btn"
@@ -500,8 +502,9 @@ export function RoutineClient({ routines, searchParams }: { routines: RoutineDat
       )}
 
       {/* Formulário	*/}
-      {(showForm || editingRoutine) && (
+      {isFormOpen && (
         <NewRoutineForm
+          key={editingRoutine?.id ?? "new"}
           onClose={() => {
             setShowForm(false);
             setEditingRoutine(null);
